@@ -59,8 +59,9 @@ def main():
     opt = parser.parse_args()
 
     # Set up configuration
-    configs = [OmegaConf.load(cfg) for cfg in opt.base]
-    config = OmegaConf.merge(*configs)
+    configs = [OmegaConf.load(cfg) for cfg in opt.base] if opt.base else []
+    config = OmegaConf.merge(*configs) if configs else OmegaConf.create()
+    
     model = instantiate_from_config(config.model)
 
     # Set the random seed for reproducibility
